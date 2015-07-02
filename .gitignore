@@ -22,6 +22,34 @@ Thumbs.db
 /jee1/
 /third-party/
 
+# NetBeans generated files
+
+ant-deploy.xml
+build.xml
+build-impl.xml
+faces-config.NavData
+genfiles.properties
+
+/ucv1/source/meta/build/
+/ucv1/source/meta/dist/
+/ucv1/source/meta/nbproject/private/
+
+/ucv1ap101/source/ucv1ap101/build/
+/ucv1ap101/source/ucv1ap101/dist/
+/ucv1ap101/source/ucv1ap101/nbproject/private/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-ejb/build/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-ejb/dist/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-ejb/nbproject/private/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-lib/build/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-lib/dist/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-lib/nbproject/private/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-resources/build/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-resources/dist/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-resources/nbproject/private/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-war/build/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-war/dist/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-war/nbproject/private/
+
 # Archivos y directorios generados por Adalid
 /ucv1ap101/delete-log-files.bat
 /ucv1ap101/home-compare.bat
@@ -31,6 +59,10 @@ Thumbs.db
 /ucv1ap101/variables.sh
 
 /ucv1ap101/source/development/
+/ucv1ap101/source/management/*.bat
+/ucv1ap101/source/management/*.password
+/ucv1ap101/source/management/*.sh
+/ucv1ap101/source/management/*.txt
 /ucv1ap101/source/management/HOME
 /ucv1ap101/source/management/backup/
 /ucv1ap101/source/management/dist/
@@ -68,12 +100,15 @@ Thumbs.db
 /ucv1ap101/source/ucv1ap101/ucv1ap101-ejb/test/
 /ucv1ap101/source/ucv1ap101/ucv1ap101-lib/src/java/copy/
 /ucv1ap101/source/ucv1ap101/ucv1ap101-lib/src/java/crop/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-lib/test/
 /ucv1ap101/source/ucv1ap101/ucv1ap101-resources/src/copy/
 /ucv1ap101/source/ucv1ap101/ucv1ap101-resources/src/crop/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-resources/test/
 /ucv1ap101/source/ucv1ap101/ucv1ap101-war/src/conf/MANIFEST.MF
 /ucv1ap101/source/ucv1ap101/ucv1ap101-war/src/java/copy-1/
 /ucv1ap101/source/ucv1ap101/ucv1ap101-war/src/java/copy-2/
 /ucv1ap101/source/ucv1ap101/ucv1ap101-war/src/java/crop/
+/ucv1ap101/source/ucv1ap101/ucv1ap101-war/test/
 /ucv1ap101/source/ucv1ap101/ucv1ap101-war/web/WEB-INF/faces-config.xml
 /ucv1ap101/source/ucv1ap101/ucv1ap101-war/web/WEB-INF/glassfish-web.xml
 /ucv1ap101/source/ucv1ap101/ucv1ap101-war/web/WEB-INF/tld/webui-jsf.tld
