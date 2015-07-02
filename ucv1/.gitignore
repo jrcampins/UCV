@@ -1,0 +1,7 @@
+*.lnk
+*.log
+build-impl.xml
+genfiles.properties
+/source/meta/build/
+/source/meta/dist/
+/source/meta/test/
