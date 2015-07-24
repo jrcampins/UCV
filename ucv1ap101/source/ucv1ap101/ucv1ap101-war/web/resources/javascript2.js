@@ -68,7 +68,7 @@ function getCookieValue (cookieName) {
 */
 function testSessionCookie () {
     document.cookie ="testSessionCookie=Enabled";
-    if (getCookieValue("testSessionCookie") == "Enabled")
+    if (getCookieValue("testSessionCookie") === "Enabled")
         return true;
     else
         return false;
@@ -92,7 +92,7 @@ function testSessionCookie () {
 */
 function testPersistentCookie () {
     writePersistentCookie ("testPersistentCookie", "Enabled", "minutes", 1);
-    if (getCookieValue ("testPersistentCookie")=="Enabled")
+    if (getCookieValue ("testPersistentCookie") === "Enabled")
         return true;
     else 
         return false;
