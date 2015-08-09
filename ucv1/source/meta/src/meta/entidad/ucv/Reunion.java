@@ -18,7 +18,6 @@ import adalid.core.annotations.BusinessKey;
 import adalid.core.annotations.CharacterDataGen;
 import adalid.core.annotations.ColumnField;
 import adalid.core.annotations.DescriptionProperty;
-import adalid.core.annotations.EntityDataGen;
 import adalid.core.annotations.EntityTableView;
 import adalid.core.annotations.EntityTriggers;
 import adalid.core.annotations.ExportOperationClass;
@@ -55,6 +54,7 @@ import adalid.core.interfaces.Check;
 import adalid.core.interfaces.Segment;
 import adalid.core.interfaces.State;
 import adalid.core.parameters.DateParameter;
+import adalid.core.parameters.StringParameter;
 import adalid.core.parameters.TimeParameter;
 import adalid.core.properties.DateProperty;
 import adalid.core.properties.IntegerProperty;
@@ -70,7 +70,7 @@ import meta.entidad.comun.control.acceso.Usuario;
  *
  * @author Jorge
  */
-@EntityDataGen(start = 1, step = 1, stop = 100)
+//@EntityDataGen(start = 1, step = 1, stop = 100)
 @EntityTableView(inserts = Kleenean.FALSE)
 @EntityTriggers(afterValue = Kleenean.TRUE)
 public class Reunion extends AbstractPersistentEntity {
@@ -426,6 +426,51 @@ public class Reunion extends AbstractPersistentEntity {
     @PropertyField(create = Kleenean.FALSE, update = Kleenean.FALSE, table = Kleenean.FALSE, heading = Kleenean.FALSE)
     public TimestampProperty fechaHoraEstadoReunion;
 
+    /**
+     * many-to-one entity reference property field
+     */
+    @Allocation(maxDepth = 1, maxRound = 0)
+    @ForeignKey(onDelete = OnDeleteAction.NONE, onUpdate = OnUpdateAction.NONE)
+    @ManyToOne(navigability = Navigability.UNIDIRECTIONAL, view = MasterDetailView.NONE)
+    @PropertyField(create = Kleenean.FALSE, update = Kleenean.FALSE, table = Kleenean.FALSE, heading = Kleenean.FALSE)
+    public EscalaEncuesta pregunta1;
+
+    /**
+     * many-to-one entity reference property field
+     */
+    @Allocation(maxDepth = 1, maxRound = 0)
+    @ForeignKey(onDelete = OnDeleteAction.NONE, onUpdate = OnUpdateAction.NONE)
+    @ManyToOne(navigability = Navigability.UNIDIRECTIONAL, view = MasterDetailView.NONE)
+    @PropertyField(create = Kleenean.FALSE, update = Kleenean.FALSE, table = Kleenean.FALSE, heading = Kleenean.FALSE)
+    public EscalaEncuesta pregunta2;
+
+    /**
+     * many-to-one entity reference property field
+     */
+    @Allocation(maxDepth = 1, maxRound = 0)
+    @ForeignKey(onDelete = OnDeleteAction.NONE, onUpdate = OnUpdateAction.NONE)
+    @ManyToOne(navigability = Navigability.UNIDIRECTIONAL, view = MasterDetailView.NONE)
+    @PropertyField(create = Kleenean.FALSE, update = Kleenean.FALSE, table = Kleenean.FALSE, heading = Kleenean.FALSE)
+    public EscalaEncuesta pregunta3;
+
+    /**
+     * string property field
+     */
+    @PropertyField(create = Kleenean.FALSE, update = Kleenean.FALSE, table = Kleenean.FALSE, heading = Kleenean.FALSE)
+    public StringProperty pregunta4;
+
+    /**
+     * timestamp property field
+     */
+    @PropertyField(create = Kleenean.FALSE, update = Kleenean.FALSE, table = Kleenean.FALSE, heading = Kleenean.FALSE)
+    public TimestampProperty fechaHoraCorreoEncuestaReunion;
+
+    /**
+     * timestamp property field
+     */
+    @PropertyField(create = Kleenean.FALSE, update = Kleenean.FALSE, table = Kleenean.FALSE, heading = Kleenean.FALSE)
+    public TimestampProperty fechaHoraEncuestaReunion;
+
     @Override
     protected void settleProperties() {
         super.settleProperties();
@@ -452,9 +497,17 @@ public class Reunion extends AbstractPersistentEntity {
         fechaHoraEstadoReunion.setDefaultValue(SpecialTemporalValue.CURRENT_TIMESTAMP);
         horaFinDeseada.setDefaultDescription("Ej: 09:00 PM");
         horaInicioPautada.setDefaultDescription("Ej: 09:00 AM");
+        pregunta1.setDefaultLabel("calidad de los equipos");
+        pregunta1.setDefaultDescription("¿La calidad de los equipos de la sala fue lo esperado?");
+        pregunta2.setDefaultLabel("calidad de los refrigerios");
+        pregunta2.setDefaultDescription("¿La calidad de los refrigerios del evento fue lo esperado?");
+        pregunta3.setDefaultLabel("calidad del servicio");
+        pregunta3.setDefaultDescription("¿Está conforme con el servicio prestado?");
+        pregunta4.setDefaultLabel("proceso de reserva");
+        pregunta4.setDefaultDescription("Indique su experiencia en general sobre el proceso de reserva de salas");
     }
 
-    Tab tab101, tab102, tab103;
+    Tab tab101, tab102, tab103, tab104;
 
     @Override
     protected void settleTabs() {
@@ -465,6 +518,8 @@ public class Reunion extends AbstractPersistentEntity {
         tab102.newTabField(tipoSalaDeseada, asistentes, fechaInicioDeseada, horaInicioDeseada, fechaFinDeseada, horaFinDeseada, margen);
         tab103.setDefaultLabel("reservación de sala");
         tab103.newTabField(sala, fechaInicioPautada, horaInicioPautada, fechaFinPautada, horaFinPautada, reservacion, fechaHoraEstadoReservacion);
+        tab104.setDefaultLabel("encuesta");
+        tab104.newTabField(pregunta1, pregunta2, pregunta3, pregunta4);
     }
 
 //  Check check101;
@@ -813,6 +868,46 @@ public class Reunion extends AbstractPersistentEntity {
             super.settleParameters();
             reunion.estado.setCurrentValue(estado.CANCELADA);
             reunion.fechaHoraEstadoReunion.setCurrentValue(SpecialTemporalValue.CURRENT_TIMESTAMP);
+        }
+
+    }
+
+    protected LLenarEncuesta llenarEncuesta;
+
+    @ProcessOperationClass(overloading = Kleenean.FALSE)
+    @OperationClass(access = OperationAccess.RESTRICTED)
+    public class LLenarEncuesta extends ProcessOperation {
+
+        /**
+         * instance reference parameter field
+         */
+        @InstanceReference
+        protected Reunion reunion;
+
+        @ParameterField(linkedField = "pregunta1", required = Kleenean.TRUE)
+        protected EscalaEncuesta pregunta1;
+
+        @ParameterField(linkedField = "pregunta2", required = Kleenean.TRUE)
+        protected EscalaEncuesta pregunta2;
+
+        @ParameterField(linkedField = "pregunta3", required = Kleenean.TRUE)
+        protected EscalaEncuesta pregunta3;
+
+        @ParameterField(linkedField = "pregunta4")
+        protected StringParameter pregunta4;
+
+        @Override
+        protected void settleParameters() {
+            super.settleParameters();
+            pregunta1.setDefaultLabel("calidad de los equipos");
+            pregunta1.setDefaultDescription("¿La calidad de los equipos de la sala fue lo esperado?");
+            pregunta2.setDefaultLabel("calidad de los refrigerios");
+            pregunta2.setDefaultDescription("¿La calidad de los refrigerios del evento fue lo esperado?");
+            pregunta3.setDefaultLabel("calidad del servicio");
+            pregunta3.setDefaultDescription("¿Está conforme con el servicio prestado?");
+            pregunta4.setDefaultLabel("proceso de reserva");
+            pregunta4.setDefaultDescription("Indique su experiencia en general sobre el proceso de reserva de salas");
+            reunion.fechaHoraEncuestaReunion.setCurrentValue(SpecialTemporalValue.CURRENT_TIMESTAMP);
         }
 
     }

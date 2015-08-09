@@ -17,6 +17,7 @@ import ucv1ap101.ejb.business.message.ReunionCancelarMessage;
 import ucv1ap101.ejb.business.message.ReunionCancelarReservacionSalaMessage;
 import ucv1ap101.ejb.business.message.ReunionConfirmarReservacionSalaMessage;
 import ucv1ap101.ejb.business.message.ReunionConvocarMessage;
+import ucv1ap101.ejb.business.message.ReunionLlenarEncuestaMessage;
 import ucv1ap101.ejb.business.message.ReunionRechazarReservacionSalaMessage;
 import ucv1ap101.ejb.business.message.ReunionSolicitarReservacionSalaMessage;
 import ucv1ap101.ejb.business.process.ReunionBusinessProcessLocal;
@@ -26,6 +27,7 @@ import ucv1ap101.ejb.core.mail.NotifierBean;
 import ucv1ap101.ejb.persistence.entity.Invitacion;
 import ucv1ap101.ejb.persistence.entity.Persona;
 import ucv1ap101.ejb.persistence.entity.Reunion;
+import ucv1ap101.ejb.persistence.facade.EscalaEncuestaFacadeLocal;
 import ucv1ap101.ejb.persistence.facade.EstadoInvitacionFacadeLocal;
 import ucv1ap101.ejb.persistence.facade.EstadoReservacionFacadeLocal;
 import ucv1ap101.ejb.persistence.facade.EstadoReunionFacadeLocal;
@@ -47,6 +49,12 @@ public class ReunionBusinessProcessLogicImpl
     implements ReunionBusinessProcessLogicLocal {
 
     @EJB
+    private InvitacionFacadeLocal invitacionFacade;
+
+    @EJB
+    private EscalaEncuestaFacadeLocal escalaEncuestaFacade;
+
+    @EJB
     private SalaFacadeLocal salaFacade;
 
     @EJB
@@ -60,9 +68,6 @@ public class ReunionBusinessProcessLogicImpl
 
     @EJB
     private ReunionBusinessProcessLocal processor;
-
-    @EJB
-    private InvitacionFacadeLocal facade;
 
     @EJB(beanName = "ReunionBusinessProcessLogicBean")
     private ReunionBusinessProcessLogicLocal logician;
@@ -243,6 +248,29 @@ public class ReunionBusinessProcessLogicImpl
         instance.setFechaHoraEstadoReservacion(TimeUtils.currentTimestamp());
     }
 
+    /**
+     * SYNCHRONOUS INSTANCE PROCESS llenarEncuesta.
+     *
+     * @param message
+     * @param instance
+     * @throws java.lang.Exception
+     */
+    @Override
+    public void llenarEncuesta(ReunionLlenarEncuestaMessage message, Reunion instance) throws Exception {
+        if (message == null) {
+            throw new IllegalArgumentException(ReunionLlenarEncuestaMessage.class.getSimpleName());
+        }
+        if (instance == null) {
+            throw new IllegalArgumentException(Reunion.class.getSimpleName());
+        }
+//      logician.llenarEncuesta(message, instance);
+        instance.setPregunta1(escalaEncuestaFacade.find(message.getArgumentoPregunta1()));
+        instance.setPregunta2(escalaEncuestaFacade.find(message.getArgumentoPregunta2()));
+        instance.setPregunta3(escalaEncuestaFacade.find(message.getArgumentoPregunta3()));
+        instance.setPregunta4(message.getArgumentoPregunta4());
+        instance.setFechaHoraEncuestaReunion(TimeUtils.currentTimestamp());
+    }
+
     private void enviarCorreos(Reunion instance, String subject, String message) {
         List<String> direcciones = direccionesDeCorreoDeTodosLosInvitados(instance);
         if (direcciones.isEmpty()) {
@@ -260,7 +288,7 @@ public class ReunionBusinessProcessLogicImpl
 
     private List<String> direccionesDeCorreoDeTodosLosInvitados(Reunion instance) {
         List<String> direcciones = new ArrayList<>();
-        List<Invitacion> invitaciones = facade.findByQuery(SELECT_INVITACIONES + instance.getId(), EnumTipoQuery.NATIVE, true);
+        List<Invitacion> invitaciones = invitacionFacade.findByQuery(SELECT_INVITACIONES + instance.getId(), EnumTipoQuery.NATIVE, true);
         if (invitaciones.isEmpty()) {
             return direcciones;
         }
