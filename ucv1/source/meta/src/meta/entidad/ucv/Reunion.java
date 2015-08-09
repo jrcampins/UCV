@@ -450,6 +450,8 @@ public class Reunion extends AbstractPersistentEntity {
         estado.setDefaultValue(estado.PENDIENTE);
         fechaHoraEstadoReunion.setInitialValue(SpecialTemporalValue.CURRENT_TIMESTAMP);
         fechaHoraEstadoReunion.setDefaultValue(SpecialTemporalValue.CURRENT_TIMESTAMP);
+        horaFinDeseada.setDefaultDescription("Ej: 09:00 PM");
+        horaInicioPautada.setDefaultDescription("Ej: 09:00 AM");
     }
 
     Tab tab101, tab102, tab103;

@@ -325,6 +325,10 @@ public class Reservacion extends AbstractPersistentEntity {
         estado.setDefaultValue(estado.SOLICITADA);
         fechaHoraEstado.setInitialValue(SpecialTemporalValue.CURRENT_TIMESTAMP);
         fechaHoraEstado.setDefaultValue(SpecialTemporalValue.CURRENT_TIMESTAMP);
+        fechaInicioReservacion.setDefaultTooltip("Ejemplo: 09:00 am");
+        fechaInicioReservacion.setDefaultDescription("Ej: 09:00 AM");
+        fechaHoraFinReservacion.setDefaultTooltip("Ejemplo: 14:00 am");
+        fechaHoraFinReservacion.setDefaultDescription("Ej: 09:00 PM");
     }
 
     @Override
